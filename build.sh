@@ -41,15 +41,15 @@ else
 fi
 
 echo "uploading to ecr repo letsdata_javascript_interface"
-#aws ecr get-login-password $REGION $PROFILE | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com
-#REPOSITORY_URI=`aws ecr create-repository --repository-name letsdata_python_functions --image-scanning-configuration scanOnPush=true --image-tag-mutability MUTABLE $REGION $PROFILE| jq .repository.repositoryUri`
-#REPOSITORY_URI=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/letsdata_python_functions
-#echo "repository uri "$REPOSITORY_URI
-#docker tag letsdata_javascript_interface:$BUILD_STAGE $REPOSITORY_URI:latest
-#docker push $REPOSITORY_URI:latest
+aws ecr get-login-password $REGION $PROFILE | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com
+#REPOSITORY_URI=`aws ecr create-repository --repository-name letsdata_javascript_functions --image-scanning-configuration scanOnPush=true --image-tag-mutability MUTABLE $REGION $PROFILE| jq .repository.repositoryUri`
+REPOSITORY_URI=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/letsdata_javascript_functions
+echo "repository uri "$REPOSITORY_URI
+docker tag letsdata_javascript_interface:$BUILD_STAGE $REPOSITORY_URI:latest
+docker push $REPOSITORY_URI:latest
 
-#aws lambda update-function-code --function-name TestLetsDataPythonBridgeLambdaFunction --image-uri 223413462631.dkr.ecr.us-east-1.amazonaws.com/momento_lambda_functions:latest
-#aws lambda invoke --function-name TestLetsDataPythonBridgeLambdaFunction --invocation-type RequestResponse --payload eyJyZXF1ZXN0SWQiOiI2NWZmZjAwYi00NjBjLTQwNTUtYTE3MS1mMGE4YzJlNGFlMjIiLCJpbnRlcmZhY2UiOiJTaW5nbGVGaWxlUGFyc2VyIiwiZnVuY3Rpb24iOiJnZXRTM0ZpbGVUeXBlIiwibGV0c2RhdGFBdXRoIjp7InRlbmFudElkIjoiM2MyNWJkYmQtYzJiMS00Yjc0LTlmNmEtYjE4ZDIzZTZhZGUxIiwidXNlcklkIjoiZGU5ZWI1YTYtYTA2Zi00MjlmLThmNzUtOWE0MzhmZTA3M2UxIiwiZGF0YXNldE5hbWUiOiJDb21tb25DcmF3bERhdGFzZXQiLCJkYXRhc2V0SWQiOiI3OGNlMGFhMi05YjhjLTQ1MzQtOTE3MC00NDVkMmNmZDcwYWYifSwiZGF0YSI6e319 ./out
+aws lambda update-function-code --function-name TestLetsDataJavascriptBridgeLambdaFunction --image-uri 223413462631.dkr.ecr.us-east-1.amazonaws.com/letsdata_javascript_functions:latest
+aws lambda invoke --function-name TestLetsDataJavascriptBridgeLambdaFunction --invocation-type RequestResponse --payload eyJyZXF1ZXN0SWQiOiI2NWZmZjAwYi00NjBjLTQwNTUtYTE3MS1mMGE4YzJlNGFlMjIiLCJpbnRlcmZhY2UiOiJTaW5nbGVGaWxlUGFyc2VyIiwiZnVuY3Rpb24iOiJnZXRTM0ZpbGVUeXBlIiwibGV0c2RhdGFBdXRoIjp7InRlbmFudElkIjoiM2MyNWJkYmQtYzJiMS00Yjc0LTlmNmEtYjE4ZDIzZTZhZGUxIiwidXNlcklkIjoiZGU5ZWI1YTYtYTA2Zi00MjlmLThmNzUtOWE0MzhmZTA3M2UxIiwiZGF0YXNldE5hbWUiOiJDb21tb25DcmF3bERhdGFzZXQiLCJkYXRhc2V0SWQiOiI3OGNlMGFhMi05YjhjLTQ1MzQtOTE3MC00NDVkMmNmZDcwYWYifSwiZGF0YSI6e319 ./out
 
 echo "########## letsdata_javascript_interface built ##############"
 echo "########################"
