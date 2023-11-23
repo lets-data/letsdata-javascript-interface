@@ -44,11 +44,17 @@ export class LetsDataAuthParams{
 }
 
 export const InterfaceNames = Object.freeze({
-    SingleFileParser:   "singlefileparser"
+    SingleFileParser:   "singlefileparser",
+    QueueMessageReader:   "queuemessagereader",
+    SagemakerVectorsInterface:   "sagemakervectorsinterface",
+    KinesisRecordReader:   "kinesisrecordreader",
 });
 
 export function interfaceNameFromString(str) {
-    if (str == "singlefileparser") {return InterfaceNames.SingleFileParser; }
+    if (str == "singlefileparser") { return InterfaceNames.SingleFileParser; }
+    else if (str == "queuemessagereader") { return InterfaceNames.QueueMessageReader; }
+    else if (str == "sagemakervectorsinterface") { return InterfaceNames.SagemakerVectorsInterface; }
+    else if (str == "kinesisrecordreader") { return InterfaceNames.KinesisRecordReader; }
     else {
         throw new Error('Unexpected InterfaceName');
     }

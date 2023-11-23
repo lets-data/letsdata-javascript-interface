@@ -1,10 +1,8 @@
-/*from letsdata_utils.logging_utils import logger
-from letsdata_utils.validations import letsdata_assert
-from letsdata_service.Service import ServiceRequest, LetsDataAuthParams, InterfaceNames
-from letsdata_service.SingleFileParserService import getSingleFileParserRequest
-*/
 import { logger } from "../letsdata_utils/logging_utils.js";
 import { letsdata_assert } from "../letsdata_utils/validations.js";
+import { getQueueMessageReaderRequest } from "./QueueMessageReaderService.js";
+import { getKinesisRecordReaderServiceRequest } from "./KinesisRecordReaderService.js";
+import { getSagemakerVectorsInterfaceServiceRequest } from "./SagemakerVectorsInterfaceService.js";
 import { InterfaceNames, LetsDataAuthParams, interfaceNameFromString }  from './Service.js';
 import { getSingleFileParserRequest }  from './SingleFileParserService.js';
 
@@ -35,10 +33,17 @@ export function getServiceRequest(_event) {
     var serviceRequest; 
     if (interfaceName == InterfaceNames.SingleFileParser) {
         serviceRequest = getSingleFileParserRequest(requestId, letsDataAuthParams, interfaceName, functionName, data, batchedData);
+    } else if (interfaceName == InterfaceNames.QueueMessageReader) {
+        serviceRequest = getQueueMessageReaderRequest(requestId, letsDataAuthParams, interfaceName, functionName, data, batchedData);
+    } else if (interfaceName == InterfaceNames.SagemakerVectorsInterface) {
+        serviceRequest = getSagemakerVectorsInterfaceServiceRequest(requestId, letsDataAuthParams, interfaceName, functionName, data, batchedData);
+    }  else if (interfaceName == InterfaceNames.KinesisRecordReader) {
+        serviceRequest = getKinesisRecordReaderServiceRequest(requestId, letsDataAuthParams, interfaceName, functionName, data, batchedData);
     } else {
         throw new Exception("lambda event - interfaceName not yet supported "+JSON.stringify(interfaceName));
     }
     
     logger.debug("serviceRequest initialized - interfaceName: "+JSON.stringify(interfaceName.toString())+", functionName: "+functionName);
+
     return serviceRequest;
 }
