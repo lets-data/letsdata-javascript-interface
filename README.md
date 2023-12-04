@@ -35,10 +35,10 @@ Here is a look at the #LetsData interfaces and what you might need to implement 
 * **SkipDoc:** The `letsdata_interfaces.documents.SkipDoc` extends the "Document" and is the container for any skip documents that are returned by the user handlers. A skip document is returned when the processor determines that the record from the file is not of interest to the current processor and should be skipped from being written to the write destination. Customers can return skip records from handlers using this default implementation.
 
 ### Readers
-* **S3 - SingleFileParser**: The `letsdata_interfaces.parsers.SingleFileParser` is the parser interface for reading an S3 File. This is where you tell us how to parse the individual records from the file. The implementation needs to be stateless.
-* **Kinesis - KinesisRecordReader**: The `letsdata_interfaces.kinesis.KinesisRecordReader` is the parser interface for processing a kinesis record. This is where you transform a Kinesis record to a document.
-* **SQS - QueueMessageReader**: The `letsdata_interfaces.sqs.QueueMessageReader` is the parser interface for processing an sqs message. This is where you transform an sqs message to a document.
-* **Sagemaker - SagemakerVectorsInterface**: The `letsdata_interfaces.sagemaker.SagemakerVectorsInterface` is the interface for processing documents for AWS Sagemaker vector embeddings generation. This is where you extract the document that needs vectorizationfrom the feature doc in `extractDocumentElementsForVectorization` and construct an output doc from the vectors in `constructVectorDoc`.
+* **S3 - SingleFileParser**: The `letsdata_interfaces.readers.parsers.SingleFileParser` is the parser interface for reading an S3 File. This is where you tell us how to parse the individual records from the file. The implementation needs to be stateless.
+* **Kinesis - KinesisRecordReader**: The `letsdata_interfaces.readers.kinesis.KinesisRecordReader` is the parser interface for processing a kinesis record. This is where you transform a Kinesis record to a document.
+* **SQS - QueueMessageReader**: The `letsdata_interfaces.readers.sqs.QueueMessageReader` is the parser interface for processing an sqs message. This is where you transform an sqs message to a document.
+* **Sagemaker - SagemakerVectorsInterface**: The `letsdata_interfaces.readers.sagemaker.SagemakerVectorsInterface` is the interface for processing documents for AWS Sagemaker vector embeddings generation. This is where you extract the document that needs vectorizationfrom the feature doc in `extractDocumentElementsForVectorization` and construct an output doc from the vectors in `constructVectorDoc`.
 
 ### Model
 The `letsdata_interfaces.model` has helper classes that are used to return results and metadata to the callers. The `ParseDocumentResult` returns the parsed document and status code. The `RecordParseHint` is what is used to return record start and record end patterns for parsing records from S3 file. 
@@ -46,10 +46,10 @@ The `letsdata_interfaces.model` has helper classes that are used to return resul
 ## How to Implement:
 * Create a copy of the code by Forking the repo to your account. 
 * Plan your dataset as to what is the read destination, the write destination, the error destination and compute engine. Depending on these, you'll need to implement the interfaces. 
-    * For SQS read, implement the `letsdata_interfaces.sqs.QueueMessageReader`
-    * For Kinesis read, implement the `letsdata_interfaces.sqs.KinesisRecordReader`
-    * For S3 read, implement the `letsdata_interfaces.parsers.SingleFileParser`
-    * For Sagemaker read, implement the `letsdata_interfaces.sagemaker.SagemakerVectorsInterface`
+    * For SQS read, implement the `letsdata_interfaces.readers.sqs.QueueMessageReader`
+    * For Kinesis read, implement the `letsdata_interfaces.readers.sqs.KinesisRecordReader`
+    * For S3 read, implement the `letsdata_interfaces.readers.parsers.SingleFileParser`
+    * For Sagemaker read, implement the `letsdata_interfaces.readers.sagemaker.SagemakerVectorsInterface`
 * In the forked repo, implement the interfaces for the usecases. Example implementation of these are in the examples repo.
 * Update the build.sh 
     * with your AWS account 

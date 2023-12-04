@@ -29,10 +29,10 @@ export class QueueMessageReader {
      |                     |                              |                     |                        +---------------------+
      |   AWS SQS Queue     |                              |   Is Error Doc?     |
      |                     |                              |        |            |                        +---------------------+
-     |                     |                              |        +---- yes ->-|---- write document --->|  Write Destination  |
+     |                     |                              |        +---- no -->-|---- write document --->|  Write Destination  |
      |                     |                              |        |            |                        +---------------------+
      +---------------------+                              |        |            |                        +---------------------+
-              ^                                           |        +---- no -->-|---- write error ------>|  Error Destination  |
+              ^                                           |        +---- yes ->-|---- write error ------>|  Error Destination  |
               |                                           |        |            |                        +---------------------+
               |                                           |   Should Delete?    |
               |                                           |        |            |
