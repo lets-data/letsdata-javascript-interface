@@ -14,7 +14,7 @@ elif [[ $BUILD_STAGE == "prod" ]]; then
     REGION="--region us-east-1"
 else
     echo "unknown build stage "
-    echo $BUILD_STAGE    
+    echo $BUILD_STAGE
     exit -1
 fi
 
@@ -34,48 +34,48 @@ KINESIS_RECORD_READER_RESPONSE=`curl "http://localhost:9000/2015-03-31/functions
 SAGEMAKER_EXTRACT_RESPONSE=`curl "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{"requestId":"65fff00b-460c-4055-a171-f0a8c2e4ae22","interface":"SagemakerVectorsInterface","function":"extractDocumentElementsForVectorization","letsdataAuth":{"tenantId":"3c25bdbd-c2b1-4b74-9f6a-b18d23e6ade1","userId":"de9eb5a6-a06f-429f-8f75-9a438fe073e1","datasetName":"CommonCrawlDataset","datasetId":"78ce0aa2-9b8c-4534-9170-445d2cfd70af"},"data":{"document":{"id":"318792f5-8bcb-4a77-b362-087520efb49c","url":"www.cnn.com","title":"Breaking News, Latest News and Videos | CNN","description":"View the latest news and breaking news today for U.S., world, weather, entertainment, politics and health at CNN.com.","keywords":"cnn news, daily news, breaking news, news today, current events","docText":"Article: US inflation means families are spending more than two years ago. The typical American household spent more in July than they did two years ago to buy the same goods and services, according to recent surveys. That figure underscores the cumulative impact high inflation has had on consumer finances — even as price growth has cooled considerably in recent months."}}}'`
 SAGEMAKER_VECTORS_RESPONSE=`curl "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{"requestId":"65fff00b-460c-4055-a171-f0a8c2e4ae22","interface":"SagemakerVectorsInterface","function":"constructVectorDoc","letsdataAuth":{"tenantId":"3c25bdbd-c2b1-4b74-9f6a-b18d23e6ade1","userId":"de9eb5a6-a06f-429f-8f75-9a438fe073e1","datasetName":"CommonCrawlDataset","datasetId":"78ce0aa2-9b8c-4534-9170-445d2cfd70af"},"data":{"documentInterface":{"id":"318792f5-8bcb-4a77-b362-087520efb49c","url":"www.cnn.com","title":"Breaking News, Latest News and Videos | CNN","description":"View the latest news and breaking news today for U.S., world, weather, entertainment, politics and health at CNN.com.","keywords":"cnn news, daily news, breaking news, news today, current events","docText":"Article: US inflation means families are spending more than two years ago. The typical American household spent more in July than they did two years ago to buy the same goods and services, according to recent surveys. That figure underscores the cumulative impact high inflation has had on consumer finances — even as price growth has cooled considerably in recent months."},"vectorsMap":{"PageTitle":[58.7,45.6,59.1,75.1],"PageDescription":[27.6,12,9.8,19,96,1.2,11.3,9.8,29.8,22.3,22.4,82.9,27.5,12.4,11.5,80.3,30.4],"PageKeywords":[31.8,48.4,2.4,98.3,28.4,55.5,15.3,79.3,81,12,56.4,56,13.7,46.4,2.9,46.5,65.2,70.7,13.1,59.8,63.8,22.4,15.2],"PageText":[96.3,79.8,18.2,37.8,85.6,83.6,68.3,54.5,95.9,64,32.6,36.4,68,93.1,40.2,61,98.2,52.7,26.2,31.1,26.9,35.2,16.8,25.3,97.7,81.6,87.9,21.5,72.4,12.1,27.4,83.9,81.9,60.1,5.5]}}}'`
 
-echo "killing letsdata_python_bridge container"
+echo "killing letsdata_javascript_interface container"
 docker kill $CONTAINER_ID
 if [[ $SINGLE_FILE_PARSER_RESPONSE == *"Not Yet Implemented"* ]]; then
-    echo "letsdata_python_bridge single file parser test passed"
+    echo "letsdata_javascript_interface single file parser test passed"
 else
-    echo "letsdata_python_bridge single file parser response is not expected"
+    echo "letsdata_javascript_interface single file parser response is not expected"
     echo "response: "
     echo $SINGLE_FILE_PARSER_RESPONSE    
     ERROR=TRUE
 fi
 
 if [[ $QUEUE_MESSAGE_READER_RESPONSE == *"Not Yet Implemented"* ]]; then
-    echo "letsdata_python_bridge queue message reader test passed"
+    echo "letsdata_javascript_interface queue message reader test passed"
 else
-    echo "letsdata_python_bridge queue message reader response is not expected"
+    echo "letsdata_javascript_interface queue message reader response is not expected"
     echo "response: "
     echo $QUEUE_MESSAGE_READER_RESPONSE    
     ERROR=TRUE
 fi
 
 if [[ $KINESIS_RECORD_READER_RESPONSE == *"Not Yet Implemented"* ]]; then
-    echo "letsdata_python_bridge kinesis record reader test passed"
+    echo "letsdata_javascript_interface kinesis record reader test passed"
 else
-    echo "letsdata_python_bridge kinesis record reader response is not expected"
+    echo "letsdata_javascript_interface kinesis record reader response is not expected"
     echo "response: "
     echo $KINESIS_RECORD_READER_RESPONSE    
     ERROR=TRUE
 fi
 
 if [[ $SAGEMAKER_EXTRACT_RESPONSE == *"Not Yet Implemented"* ]]; then
-    echo "letsdata_python_bridge sagemaker extract test passed"
+    echo "letsdata_javascript_interface sagemaker extract test passed"
 else
-    echo "letsdata_python_bridge sagemaker extract response is not expected"
+    echo "letsdata_javascript_interface sagemaker extract response is not expected"
     echo "response: "
     echo $SAGEMAKER_EXTRACT_RESPONSE    
     ERROR=TRUE
 fi
 
 if [[ $SAGEMAKER_VECTORS_RESPONSE == *"Not Yet Implemented"* ]]; then
-    echo "letsdata_python_bridge sagemaker vectors test passed"
+    echo "letsdata_javascript_interface sagemaker vectors test passed"
 else
-    echo "letsdata_python_bridge sagemaker vectors response is not expected"
+    echo "letsdata_javascript_interface sagemaker vectors response is not expected"
     echo "response: "
     echo $SAGEMAKER_VECTORS_RESPONSE    
     ERROR=TRUE
@@ -97,8 +97,8 @@ echo "repository uri "$REPOSITORY_URI
 docker tag letsdata_javascript_interface:$BUILD_STAGE $REPOSITORY_URI:latest
 docker push $REPOSITORY_URI:latest
 
-aws lambda update-function-code --function-name TestLetsDataJavascriptBridgeLambdaFunction --image-uri 223413462631.dkr.ecr.us-east-1.amazonaws.com/letsdata_javascript_functions:latest
-aws lambda invoke --function-name TestLetsDataJavascriptBridgeLambdaFunction --invocation-type RequestResponse --payload eyJyZXF1ZXN0SWQiOiI2NWZmZjAwYi00NjBjLTQwNTUtYTE3MS1mMGE4YzJlNGFlMjIiLCJpbnRlcmZhY2UiOiJTaW5nbGVGaWxlUGFyc2VyIiwiZnVuY3Rpb24iOiJnZXRTM0ZpbGVUeXBlIiwibGV0c2RhdGFBdXRoIjp7InRlbmFudElkIjoiM2MyNWJkYmQtYzJiMS00Yjc0LTlmNmEtYjE4ZDIzZTZhZGUxIiwidXNlcklkIjoiZGU5ZWI1YTYtYTA2Zi00MjlmLThmNzUtOWE0MzhmZTA3M2UxIiwiZGF0YXNldE5hbWUiOiJDb21tb25DcmF3bERhdGFzZXQiLCJkYXRhc2V0SWQiOiI3OGNlMGFhMi05YjhjLTQ1MzQtOTE3MC00NDVkMmNmZDcwYWYifSwiZGF0YSI6e319 ./out
+aws lambda update-function-code --function-name TestLetsDataJavascriptInterfaceLambdaFunction --image-uri 223413462631.dkr.ecr.us-east-1.amazonaws.com/letsdata_javascript_functions:latest
+aws lambda invoke --function-name TestLetsDataJavascriptInterfaceLambdaFunction --invocation-type RequestResponse --payload eyJyZXF1ZXN0SWQiOiI2NWZmZjAwYi00NjBjLTQwNTUtYTE3MS1mMGE4YzJlNGFlMjIiLCJpbnRlcmZhY2UiOiJTaW5nbGVGaWxlUGFyc2VyIiwiZnVuY3Rpb24iOiJnZXRTM0ZpbGVUeXBlIiwibGV0c2RhdGFBdXRoIjp7InRlbmFudElkIjoiM2MyNWJkYmQtYzJiMS00Yjc0LTlmNmEtYjE4ZDIzZTZhZGUxIiwidXNlcklkIjoiZGU5ZWI1YTYtYTA2Zi00MjlmLThmNzUtOWE0MzhmZTA3M2UxIiwiZGF0YXNldE5hbWUiOiJDb21tb25DcmF3bERhdGFzZXQiLCJkYXRhc2V0SWQiOiI3OGNlMGFhMi05YjhjLTQ1MzQtOTE3MC00NDVkMmNmZDcwYWYifSwiZGF0YSI6e319 ./out
 
 echo "########## letsdata_javascript_interface built ##############"
 echo "########################"
