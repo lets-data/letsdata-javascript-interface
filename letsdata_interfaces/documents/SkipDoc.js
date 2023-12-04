@@ -1,6 +1,7 @@
 import { DocumentType } from "./DocumentType.js";
+import { Document } from "./Document.js"
 
-export class SkipDoc extends SingleDoc {
+export class SkipDoc extends Document {
     constructor(documentId, recordType, partitionKey, documentMetadata, documentKeyValuesMap, errorStartoffsetMap, errorEndoffsetMap, skipMessage) {
         super(DocumentType.SkipDoc, documentId, recordType, partitionKey, documentMetadata, documentKeyValuesMap);
         this.errorStartoffsetMap = errorStartoffsetMap;

@@ -1,7 +1,7 @@
 import { DocumentType } from "./DocumentType.js"
-import { SingleDoc } from "./SingleDoc.js"
+import { Document } from "./Document.js"
 
-export class ErrorDoc extends SingleDoc {
+export class ErrorDoc extends Document {
     constructor(documentId, recordType, partitionKey, documentMetadata , documentKeyValuesMap, errorStartoffsetMap, errorEndoffsetMap, errorMessage) {
         super(DocumentType.ErrorDoc, documentId, recordType, partitionKey, documentMetadata, documentKeyValuesMap);
         this.errorStartoffsetMap = errorStartoffsetMap;
