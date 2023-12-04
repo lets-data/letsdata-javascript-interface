@@ -52,7 +52,7 @@ export function getKinesisRecordReaderServiceRequest(requestId, letsDataAuth, in
         letsdata_assert(data.data != undefined && data.data != null, "invalid messageBody - None - KinesisRecordReader.parseMessage requires data keys [streamArn, shardId, partitionKey, sequenceNumber, approximateArrivalTimestamp, data]");
         letsdata_assert(data.data instanceof String || typeof data.data === 'string', "invalid data - KinesisRecordReader.parseMessage requires data value to be string");
 
-        return new KinesisRecordReader_ParseMessage(requestId, letsDataAuth, interfaceName, functionName, data.messageId, data.messageGroupId, data.messageDeduplicationId, data.messageAttributes, data.data);
+        return new KinesisRecordReader_ParseMessage(requestId, letsDataAuth, interfaceName, functionName, data.streamArn, data.shardId, data.partitionKey, data.sequenceNumber, data.approximateArrivalTimestamp, data.data);
     } else {
         throw new Error("Unknown functionName");
     }

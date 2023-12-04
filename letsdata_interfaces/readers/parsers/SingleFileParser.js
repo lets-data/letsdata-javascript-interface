@@ -8,6 +8,7 @@ import { Document } from '../../documents/Document.js';
 import { DocumentType } from '../../documents/DocumentType.js';
 import { ErrorDoc } from '../../documents/ErrorDoc.js';
 import { logger } from '../../../letsdata_utils/logging_utils.js';
+import { letsdata_assert } from "../../../letsdata_utils/validations.js";
 
 /*
     The parser interface for Single File Reader usecase. This is used when all the files are of a single type and the records in the file do not follow a state machine.

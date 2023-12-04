@@ -16,7 +16,7 @@ export class QueueMessageReader_ParseMessage extends ServiceRequest {
 
     execute() {
         const parser = new QueueMessageReader();
-        return  parser.parseMessage(this.s3FileType, this.s3FileName, this.offsetBytes, this.byteArr, this.startIndex, this.endIndex);
+        return  parser.parseMessage(this.messageId, this.messageGroupId, this.messageDeduplicationId, this.messageAttributes, this.messageBody);
     }
 }
 
@@ -31,10 +31,10 @@ export function getQueueMessageReaderRequest(requestId, letsDataAuth, interfaceN
     
     if (functionName == "parseMessage") {
         letsdata_assert(batchedData == undefined || batchedData == null || Object.keys(batchedData).length == 0, "invalid data - QueueMessageReader.parseMessage requires empty batchedData dictionary");
-        letsdata_assert(Object.keys(data).length == 5, "invalid data - QueueMessageReader.parseMessage requires data keys [messageId, messageGroupId, messageDeduplicationId, messageAttributes, messageBody]");
-        
+        letsdata_assert(Object.keys(data).length >= 3 && Object.keys(data).length <= 5, "invalid data - QueueMessageReader.parseMessage requires data keys [messageId, messageAttributes, messageBody] and optionally [messageGroupId, messageDeduplicationId]");
+
         letsdata_assert(data.messageId != undefined && data.messageId != null, "invalid messageId - None - QueueMessageReader.parseMessage requires data keys [messageId, messageGroupId, messageDeduplicationId, messageAttributes, messageBody]");
-        letsdata_assert(data.messageId instanceof String || typeof data.messageId === 'string', "invalid messageId - QueueMessageReader.parseMessage requires messageId value to be string");
+        letsdata_assert(data.messageId != undefined && data.messageId != null, "invalid messageId - None - QueueMessageReader.parseMessage requires data keys [messageId, messageAttributes, messageBody] and optionally [messageGroupId, messageDeduplicationId]");
 
         if (data.messageGroupId != undefined && data.messageGroupId != null) {
             letsdata_assert(data.messageGroupId instanceof String || typeof data.messageGroupId === 'string', "invalid messageGroupId - QueueMessageReader.parseMessage requires messageGroupId value to be string");
@@ -44,10 +44,10 @@ export function getQueueMessageReaderRequest(requestId, letsDataAuth, interfaceN
             letsdata_assert(data.messageDeduplicationId instanceof String || typeof data.messageDeduplicationId === 'string', "invalid messageDeduplicationId - QueueMessageReader.parseMessage requires messageDeduplicationId value to be string");
         }
                 
-        letsdata_assert(data.messageAttributes != undefined && data.messageAttributes != null, "invalid messageAttributes - None - QueueMessageReader.parseMessage requires data keys [messageId, messageGroupId, messageDeduplicationId, messageAttributes, messageBody]");
+        letsdata_assert(data.messageAttributes != undefined && data.messageAttributes != null, "invalid messageAttributes - None - QueueMessageReader.parseMessage requires data keys [messageId, messageAttributes, messageBody] and optionally [messageGroupId, messageDeduplicationId]");
         letsdata_assert(typeof data.messageAttributes === 'object', "invalid messageAttributes - QueueMessageReader.parseMessage requires content value to be object");
 
-        letsdata_assert(data.messageBody != undefined && data.messageBody != null, "invalid messageBody - None - QueueMessageReader.parseMessage requires data keys [messageId, messageGroupId, messageDeduplicationId, messageAttributes, messageBody]");
+        letsdata_assert(data.messageBody != undefined && data.messageBody != null, "invalid messageBody - None - QueueMessageReader.parseMessage requires data keys [messageId, messageAttributes, messageBody] and optionally [messageGroupId, messageDeduplicationId]");
         letsdata_assert(data.messageBody instanceof String || typeof data.messageBody === 'string', "invalid messageBody - QueueMessageReader.parseMessage requires messageBody value to be string");
 
         return new QueueMessageReader_ParseMessage(requestId, letsDataAuth, interfaceName, functionName, data.messageId, data.messageGroupId, data.messageDeduplicationId, data.messageAttributes, data.messageBody);
